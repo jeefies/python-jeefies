@@ -4,6 +4,8 @@ import hashlib
 from flask import current_app as ca
 from jeefies import Hexsec
 from jeefies import Content
+import hy
+from jeefies.self import User
 from functools import wraps
 from flask import url_for, Flask, render_template, redirect, session, flash, request, make_response
 req = request
@@ -47,6 +49,7 @@ def cookie_req(requires: tuple(('name', 'content')), error=origerror):
             cookies = requires[:2]
             cookie, cont = cookies
             res = func(*args, **kwargs)
+            cont = eval(cont)
             if cookie in kwargs.keys():
                 cook = req.cookies.get(kwargs[cookie])
             else:
@@ -64,13 +67,13 @@ def cookie_req(requires: tuple(('name', 'content')), error=origerror):
 
 def Login(returned, name, passwd, conpath=os.getcwd()):
     con = Content(conpath, 'user')
-    print(con.get(name))
+    #print(con.get(name))
     if con.has(name) and Hexsec.decrypt(con.get(name)[1][0]) == passwd:
         pass
     else:
-        print('eeee')
+        #print('eeee')
         flash('No such user')
-        return redirect('/')
+        return redirect(url_for('main.index'))
     resp = mkresp(returned)
     resp.set_cookie('name' + req.remote_addr, name)
     resp.set_cookie('passwd' + req.remote_addr, passwd)
@@ -87,13 +90,14 @@ def Logout(returned):
     return resp
 
 
-def get_user(conpath=os.getcwd()):
+def get_user():
     name = req.cookies.get('name'+req.remote_addr)
+    assert name,"no name"
     return name
 
 
 def permission(per, error=origerror, conpath=os.getcwd()):
-    con = Content(conpath, 'user')
+    con = User(conpath)
 
     def _permission(func):
         @wraps(func)
@@ -101,39 +105,10 @@ def permission(per, error=origerror, conpath=os.getcwd()):
             fun = func(*args, **kwargs)
             user = get_user()
             res = con.get(user)
-            if res is None or not res[1][1] == str(per):
-                print(res[1][-1], per, res)
+            if res is None or not int(res.per) >= int(per):
+                #print(res[1][-1], per, res)
                 return error()
             else:
                 return func(*args, **kwargs)
         return __permission
     return _permission
-
-
-def testper(permission, error=origerror):
-    user = Content(os.getcwd(), 'user').get('name')
-
-    def _per(func):
-        @wraps(func)
-        def __per(*a, **kw):
-            if user[1][-1] != str(permission):
-                print(permission, user[1][-1])
-                return error()
-            else:
-                return func(*a, **kw)
-        return __per
-    return _per
-
-
-def gravatar(email, size=100, default='identicon', rating='g'):
-    url = 'https://secure.gravatar.com/avatar'
-    hashs = hashlib.md5(email.lower().encode('utf-8')).hexdigest()
-    return f'{url}/{hashs}?s={size}&d={default}&r={rating}'
-
-
-def emailmsg(to, subject, tem, **kwargs):
-    msg = Message(subject, sender=(
-        'jeefy', 'jeefy163@163.com'), recipients=[to])
-    msg.body = render_template(tem+'.txt', **kwargs)
-    msg.html = render_template(tem+'.html', **kwargs)
-    return msg
