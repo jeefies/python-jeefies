@@ -65,13 +65,22 @@ This object is to manage some infomation.
 It's easy to use but need to give the data directory or it might be wrong to read the datas.
 Also, you can use ***help(object)*** for more infomation
 
+___Now with the new version based on Hylang Lisp___  
+You can get the same cache for different process while using.  
+However, `Content` for no cache but `content` for cached.  
+
 - - -
 ## Flask_self
 **Do not use it** if you don't understand how does it work.
 This is just a package for my self to use.  
 Still, you can use `help(object)` for more details.  
 > It's a module to use without flask-login and flask-sqalchemy.  
-> Also, it has some convnient object.
+> Also, it has some convnient object.  
+> Some were moved into self.
+
+## Self
+**Never use it** unless you understand all of the function.  
+Just a convenient package, not too important.  
 
 - - -
 # Thanks
