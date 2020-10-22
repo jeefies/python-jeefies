@@ -5,4 +5,6 @@ from .strtime import strtime  # strtime object
 from .content import Content  # Content object
 from .jeefies_sec import Hashsec, Hexsec, BaseSec  # encrypt objects
 from .fibonacci import fibonacci, generate_fibonacci, iterator_fibonacci
-from .complexity_function import O_test
+#from .complexity_function import O_test
+import hy as _hy
+from .hy_content import content, Content as HyContent
