@@ -15,6 +15,15 @@
 (defclass ContextError [Exception] "error for the context error " (pys "pass")) ; class for the context error
 (defclass PathError [Exception]  "error if the path is not avaliable"(pys "pass"))	 ; class for the path error
 
+(defn context [work-place &optional [work-name ""] [use-dict False] [keys []]]
+	(setv work-place (os.path.abspath work-place))
+	(when (.get CACHE (+ work-place work-name) None)
+		(return (get CACHE (+ work-place work-name))
+	))
+	(return (Context work-place work-name use-dict keys))
+)
+	
+
 (defclass wait [] ; the class to manage context for using the function
 	(defn --init-- [self] "init the using arg" (setv self.using False))
 	#@(property (defn used [self] "get true if it's used" (return (bool self.using)))) ;get True if it's free
@@ -31,7 +40,7 @@
 	)
 )
 
-(defclass Content [wait]
+(defclass Context [wait]
 	(defn --init-- [self work-place work-name &optional [use-dict False] [keys []]]
 		"use-dict, keys for no use"
 		(.--init-- wait self) ; init the waiting class
