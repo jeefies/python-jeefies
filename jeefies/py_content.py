@@ -3,7 +3,7 @@ import sys
 #from threading import Thread
 
 
-class Context:
+class Content:
     '''
     a class to manage some infomation
     You must give the work directory or this function wouldn't now where to do the orders

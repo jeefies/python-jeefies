@@ -3,7 +3,7 @@ import os
 import hashlib
 from flask import current_app as ca
 from jeefies import Hexsec
-from jeefies import Content
+from jeefies import context as Content
 import hy
 from jeefies.self import User
 from functools import wraps
