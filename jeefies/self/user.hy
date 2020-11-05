@@ -1,15 +1,15 @@
 (import os sys)
 ;;(import logging logging.config)
 (import validators)
-(import [jeefies [Content]])
+(import [jeefies [context]])
 (import [.supports [gravatar]])
 ;;(import [jeefies.flask_self [get_user]])
 
 (defclass User []
-	"A hy function for content of the user"
+	"A hy function for context of the user"
 	(defn __init__ [self path]
 		"initialize the function"
-		(setv self.con (Content path "user"))
+		(setv self.con (context path "user"))
 		;;(print (self.con.allitem))
 	)
 	(defn get-orig [self name-or-email]
@@ -27,7 +27,7 @@
 		(return (user :from-for (self.get-orig email-or-name)))
 	)
 	(defn has [self name-or-email]
-		"check if the content has the user by name or the email"
+		"check if the context has the user by name or the email"
 		(if (self.con.has name-or-email)
 			(return True)
 			(return False)
@@ -47,7 +47,7 @@
 	)
 	(setv all allname)
 	(defn add [self index list-of-values]
-		"add content by index and a list or tuple of values"
+		"add context by index and a list or tuple of values"
 		(self.con.add index list-of-values)
 	)
 	(defn add-user [self user]
@@ -60,7 +60,7 @@
 		(return (self.con.rm name-or-email))
 	)
 	(defn reset [self]
-		"reset the content(clear the data)"
+		"reset the context(clear the data)"
 		(return (self.con.reset))
 	)
 	#@(staticmethod (defn check-mail [mail]

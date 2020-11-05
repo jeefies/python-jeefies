@@ -1,8 +1,8 @@
 import jinja2 as jj
 import os
 
-conf = {}
-def conig(tplpath):
+conf = {'path': os.path.join(os.getcwd(), 'static')}
+def config(tplpath):
     conf['path'] = os.path.abspath(tplpath)
 
 def _env():

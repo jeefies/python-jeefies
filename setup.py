@@ -8,15 +8,16 @@ with open('README.md') as f:
 setup(
         name = 'jeefies',
         author = 'Jeef',
-        version = '0.0.3',
+        version = '0.0.5a3',
         packages = ['jeefies', "jeefies/jeefies_sec"],
         author_email = 'jeefy163@163.com',
         description = 'A package made by jeefy and it\'s use for self',
         maintainer = 'Jeef',
         maintainer_email = 'jeefy163@163.com',
         python_requires = '>=3.4',
-        package_data = {'': ['*txt']},
+        package_data = {'': ['*txt', '*.hy']},
         url = 'https://www.baidu.com',
         long_description = long_des,
-        long_description_content_type = 'text/markdown'
+        long_description_content_type = 'text/markdown',
+        install_requires = ['hy']
         )
